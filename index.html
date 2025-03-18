@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Inspiration Quotes</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Design Inspiration</h1>
+            <p class="subtitle">Quotes to spark your creativity</p>
+        </header>
+        
+        <main>
+            <div class="quote-container">
+                <div class="quote-mark">"</div>
+                <p id="quote" class="quote-text">Good design is obvious. Great design is transparent.</p>
+                <p id="author" class="quote-author">— Joe Sparano</p>
+            </div>
+            
+            <div class="controls">
+                <button id="new-quote" class="btn">New Quote</button>
+                <div class="categories">
+                    <button class="category-btn active" data-category="all">All</button>
+                    <button class="category-btn" data-category="graphic">Graphic</button>
+                    <button class="category-btn" data-category="ux">UX/UI</button>
+                    <button class="category-btn" data-category="product">Product</button>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Created with ❤️ for designers everywhere</p>
+        </footer>
+    </div>
+    
+    <script src="quotes.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
