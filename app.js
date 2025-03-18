@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // DOM elements
     const quoteElement = document.getElementById('quote');
     const authorElement = document.getElementById('author');
@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Current category
     let currentCategory = 'all';
+    
+    // Wait for quotes to be loaded
+    if (!quotes.loaded) {
+        await quotes.loadQuotes();
+    }
     
     // Function to get a random quote from the current category
     function getRandomQuote() {
