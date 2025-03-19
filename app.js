@@ -19,6 +19,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Function to get a random quote from the current category
     function getRandomQuote() {
+        // Special handling for AI category
+        if (currentCategory === 'ai') {
+            // Generate a new AI quote
+            return window.aiQuotes.generateQuote(currentCategory);
+        }
+        
         const categoryQuotes = quotes[currentCategory];
         const randomIndex = Math.floor(Math.random() * categoryQuotes.length);
         return categoryQuotes[randomIndex];

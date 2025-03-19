@@ -4,6 +4,7 @@ const quotes = {
     graphic: [],
     ux: [],
     product: [],
+    ai: [],
     all: [],
     
     // Flag to track if quotes have been loaded
