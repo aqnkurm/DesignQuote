@@ -21,6 +21,7 @@
                 <div class="quote-mark">"</div>
                 <p id="quote" class="quote-text">Good design is obvious. Great design is transparent.</p>
                 <p id="author" class="quote-author">— Joe Sparano</p>
+                <button id="favorite-btn" class="favorite-btn" title="Add to favorites">❤</button>
             </div>
             
             <div class="controls">
@@ -30,7 +31,13 @@
                     <button class="category-btn" data-category="graphic">Graphic</button>
                     <button class="category-btn" data-category="ux">UX/UI</button>
                     <button class="category-btn" data-category="product">Product</button>
+                    <button class="category-btn" data-category="favorites">Favorites</button>
                 </div>
+            </div>
+            
+            <div id="favorites-container" class="favorites-container hidden">
+                <h2>Your Favorite Quotes</h2>
+                <div id="favorites-list" class="favorites-list"></div>
             </div>
         </main>
         
@@ -42,6 +49,10 @@
     <script src="quotes.js"></script>
     <script src="themes.js"></script>
     <script src="visualizer.js"></script>
+    <script src="confetti.js"></script>
+    <script src="typewriter.js"></script>
+    <script src="flip.js"></script>
+    <script src="favorites.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

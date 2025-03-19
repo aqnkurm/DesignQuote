@@ -12,36 +12,60 @@ const themes = [
         }
     },
     {
-        name: 'Bauhaus',
+        name: 'Neon Dreams',
         colors: {
-            background: 'linear-gradient(135deg, #f9f9f9 0%, #ececec 100%)',
-            text: '#121212',
-            accent: '#e3342f',
-            accent2: '#0047ab',
-            card: 'white',
-            particleColor: '227, 52, 47' // RGB format for particles
+            background: 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)',
+            text: '#ffffff',
+            accent: '#ff00ff',
+            accent2: '#00ffff',
+            card: 'rgba(15, 12, 41, 0.8)',
+            particleColor: '255, 0, 255' // RGB format for particles
         }
     },
     {
-        name: 'Swiss',
+        name: 'Candy Pop',
         colors: {
-            background: 'linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)',
-            text: '#222222',
-            accent: '#ff0000',
-            accent2: '#000000',
-            card: 'white',
-            particleColor: '0, 0, 0' // RGB format for particles
-        }
-    },
-    {
-        name: 'Memphis',
-        colors: {
-            background: 'linear-gradient(135deg, #fdfdfd 0%, #f6f6f6 100%)',
+            background: 'linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%)',
             text: '#333333',
-            accent: '#00a8ff',
-            accent2: '#ff9642',
-            card: 'white',
-            particleColor: '255, 150, 66' // RGB format for particles
+            accent: '#ff4b8d',
+            accent2: '#836fff',
+            card: 'rgba(255, 255, 255, 0.9)',
+            particleColor: '255, 75, 141' // RGB format for particles
+        }
+    },
+    {
+        name: 'Ocean Breeze',
+        colors: {
+            background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+            text: '#333',
+            accent: '#0072ff',
+            accent2: '#00c6ff',
+            card: 'rgba(255, 255, 255, 0.9)',
+            particleColor: '0, 198, 255', // RGB format for particles
+            heading_color: '#003366' // Darker blue for headings to make them pop
+        }
+    },
+    {
+        name: 'Sunset Vibes',
+        colors: {
+            background: 'linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)',
+            text: '#333333',
+            accent: '#ff5e62',
+            accent2: '#ff9966',
+            card: 'rgba(255, 255, 255, 0.9)',
+            particleColor: '255, 94, 98', // RGB format for particles
+            heading_color: '#8B0000' // Dark red for headings to make them pop
+        }
+    },
+    {
+        name: 'Midnight Forest',
+        colors: {
+            background: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
+            text: '#ffffff',
+            accent: '#43cea2',
+            accent2: '#185a9d',
+            card: 'rgba(15, 32, 39, 0.8)',
+            particleColor: '67, 206, 162' // RGB format for particles
         }
     }
 ];
@@ -122,6 +146,13 @@ class ThemeSwitcher {
         this.root.style.setProperty('--accent-color-2', theme.colors.accent2);
         this.root.style.setProperty('--card-color', theme.colors.card);
         this.root.style.setProperty('--particle-color', theme.colors.particleColor);
+        
+        // Apply heading color if it exists, otherwise use accent-color-2
+        if (theme.colors.heading_color) {
+            this.root.style.setProperty('--heading-color', theme.colors.heading_color);
+        } else {
+            this.root.style.setProperty('--heading-color', theme.colors.accent2);
+        }
         
         // Update particle colors if particle system exists
         if (window.particleSystem) {

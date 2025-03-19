@@ -9,6 +9,8 @@ class QuoteVisualizer {
         this.colors = [];
         this.shapes = [];
         this.animationFrame = null;
+        this.animating = false;
+        this.particles = [];
         
         // Initialize
         this.init();
@@ -50,64 +52,26 @@ class QuoteVisualizer {
     setQuote(text, author) {
         this.currentQuote = text;
         this.currentAuthor = author;
+        this.generateVisualization();
     }
     
-    // Helper methods
-    hashString(str) {
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            hash = ((hash << 5) - hash) + str.charCodeAt(i);
-            hash |= 0; // Convert to 32bit integer
+    // Generate visualization based on quote content
+    generateVisualization() {
+        // Clear any existing animation
+        if (this.animationFrame) {
+            cancelAnimationFrame(this.animationFrame);
+            this.animationFrame = null;
         }
-        return hash;
+        
+        // Clear canvas
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        // If no quote, exit
+        if (!this.currentQuote) return;
+        
+        // Generate a hash from the quote text for consistent randomness
+        const hash = this.hashString(this.currentQuote);
+        const random = this.seededRandom(hash);
+        
     }
-    
-    seededRandom(seed) {
-        return function() {
-            seed = (seed * 9301 + 49297) % 233280;
-            return seed / 233280;
-        };
-    }
-    
-    containsDesignKeywords(text) {
-        const keywords = ['design', 'art', 'creative', 'visual', 'color', 'form', 'shape', 'space'];
-        const lowerText = text.toLowerCase();
-        return keywords.some(keyword => lowerText.includes(keyword));
-    }
-}
-
-// Initialize visualizer when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    // Create visualizer container
-    const visualizerContainer = document.createElement('div');
-    visualizerContainer.id = 'quote-visualizer';
-    visualizerContainer.className = 'quote-visualizer';
-    
-    // Insert visualizer before controls
-    const controls = document.querySelector('.controls');
-    controls.parentNode.insertBefore(visualizerContainer, controls);
-    
-    // Initialize visualizer
-    const visualizer = new QuoteVisualizer('quote-visualizer');
-    
-    // Update visualizer when quote changes
-    const quoteElement = document.getElementById('quote');
-    const authorElement = document.getElementById('author');
-    
-    // Observer for quote changes
-    const observer = new MutationObserver(() => {
-        visualizer.setQuote(
-            quoteElement.textContent,
-            authorElement.textContent.replace('— ', '')
-        );
-    });
-    
-    // Start observing
-    observer.observe(quoteElement, { childList: true, characterData: true, subtree: true });
-    
-    // Set initial quote
-    visualizer.setQuote(
-        quoteElement.textContent,
-        authorElement.textContent.replace('— ', '')
-    );
-});
+};
