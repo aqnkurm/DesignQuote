@@ -27,11 +27,28 @@ class QuoteManager {
     }
     
     // Add a new user-submitted quote
-    addUserQuote(quote) {
+    async addUserQuote(quote) {
         // Add category for user-submitted quotes
         quote.category = 'user';
         this.userQuotes.push(quote);
         this.saveUserQuotes();
+        
+        // Send to server
+        try {
+            const response = await fetch('/api/quotes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(quote)
+            });
+            
+            if (!response.ok) {
+                console.error('Failed to save quote to server:', await response.text());
+            }
+        } catch (error) {
+            console.error('Error saving quote to server:', error);
+        }
         
         // Add to quotes collection if it exists
         if (window.quotes && window.quotes.all) {
@@ -193,7 +210,7 @@ class QuoteManager {
     }
     
     // Submit quote
-    submitQuote() {
+    async submitQuote() {
         const quoteText = document.getElementById('quote-text').value.trim();
         const quoteAuthor = document.getElementById('quote-author').value.trim();
         
@@ -204,8 +221,21 @@ class QuoteManager {
                 author: quoteAuthor
             };
             
+            // Show loading state
+            const submitButton = document.querySelector('#quote-form button[type="submit"]');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Submitting...';
+            }
+            
             // Add to user quotes
-            this.addUserQuote(quote);
+            await this.addUserQuote(quote);
+            
+            // Reset button state
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit';
+            }
             
             // Show success message
             const message = document.getElementById('submission-message');

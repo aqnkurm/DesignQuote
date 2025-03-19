@@ -16,7 +16,7 @@ const quotes = {
     // Status message for loading or errors
     status: 'idle',
     
-    // Function to load quotes from our built-in collection
+    // Function to load quotes from our built-in collection and server
     async loadQuotes() {
         if (this.loadingPromise) {
             return this.loadingPromise;
@@ -28,6 +28,32 @@ const quotes = {
             try {
                 // Load quotes from our built-in collection
                 this.setBuiltInQuotes();
+                
+                // Load user-submitted quotes from server
+                try {
+                    const response = await fetch('/api/quotes/user');
+                    if (response.ok) {
+                        const userQuotes = await response.json();
+                        
+                        // Initialize user category if it doesn't exist
+                        if (!this.user) {
+                            this.user = [];
+                        }
+                        
+                        // Add user quotes to the collection
+                        this.user = userQuotes;
+                        
+                        // Also add to 'all' category
+                        userQuotes.forEach(quote => {
+                            this.all.push(quote);
+                        });
+                        
+                        console.log(`Loaded ${userQuotes.length} user quotes from server`);
+                    }
+                } catch (serverError) {
+                    console.error('Error loading quotes from server:', serverError);
+                    // Continue with built-in quotes if server fails
+                }
                 
                 this.loaded = true;
                 this.status = 'loaded';
