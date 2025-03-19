@@ -206,4 +206,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     // Display a random quote on page load
     displayNewQuote();
+    // Initialize image generator
+    window.quoteImageGenerator = new QuoteImageGenerator();
 });

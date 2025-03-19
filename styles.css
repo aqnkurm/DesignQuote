@@ -98,11 +98,9 @@ h1 {
     100% { transform: translateX(0); }
 }
 
-/* Favorite button styles */
-.favorite-btn {
+/* Favorite and Share button styles */
+.favorite-btn, .share-btn, .download-btn {
     position: absolute;
-    top: 15px;
-    right: 15px;
     background: transparent;
     border: none;
     font-size: 24px;
@@ -113,13 +111,36 @@ h1 {
     z-index: 10;
 }
 
-.favorite-btn:hover {
+.favorite-btn {
+    top: 15px;
+    right: 15px;
+}
+
+.share-btn {
+    top: 15px;
+    right: 50px;
+}
+
+.download-btn {
+    top: 15px;
+    right: 85px;
+}
+
+.favorite-btn:hover, .share-btn:hover, .download-btn:hover {
     transform: scale(1.2);
 }
 
 .favorite-btn.active {
     color: #ff5a5f;
     animation: pulse 0.5s ease-in-out;
+}
+
+.share-btn:hover {
+    color: #4285f4;
+}
+
+.download-btn:hover {
+    color: #34a853;
 }
 
 @keyframes pulse {
@@ -495,6 +516,137 @@ footer {
     font-size: 0.9rem;
 }
 
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.modal.hidden {
+    display: none;
+    opacity: 0;
+}
+
+.modal-content {
+    background-color: var(--card-color);
+    border-radius: 10px;
+    padding: 30px;
+    width: 500px;
+    max-width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-modal:hover {
+    color: var(--accent-color-2);
+    transform: rotate(90deg);
+}
+
+.modal h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--accent-color-2);
+    font-family: 'Playfair Display', serif;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 5px rgba(79, 93, 117, 0.3);
+}
+
+.success-message {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+/* Notification Styles */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--accent-color-2);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Submit Button Styles */
+.submit-btn {
+    margin-top: 20px;
+}
+
 /* Theme dropdown animation */
 .theme-dropdown.active {
     display: flex;
@@ -622,5 +774,14 @@ footer {
     .theme-dropdown {
         width: 130px;
         right: -5px;
+    }
+    
+    .share-btn {
+        right: 45px;
+    }
+    
+    .modal-content {
+        width: 90%;
+        padding: 15px;
     }
 }
