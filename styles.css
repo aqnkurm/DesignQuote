@@ -321,10 +321,11 @@ h1 {
 }
 
 .btn:hover {
-    background-color: var(--accent-color-2);
+    background-color: var(--button-hover-color, var(--accent-color-2));
     transform: translateY(-2px) scale(1.05);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     animation: pulse-button 1s infinite;
+    color: white;
 }
 
 @keyframes pulse-button {
@@ -394,10 +395,10 @@ h1 {
 }
 
 .category-btn:hover {
-    background-color: transparent;
-    color: var(--accent-color-2);
+    background-color: var(--button-hover-color, transparent);
     border-color: var(--accent-color-2);
     transform: translateY(-2px);
+    color: white;
 }
 
 .category-btn:hover::after {
@@ -440,9 +441,10 @@ h1 {
 }
 
 .theme-button:hover {
-    background-color: var(--accent-color-2);
+    background-color: var(--button-hover-color, var(--accent-color-2));
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    color: white;
 }
 
 .theme-dropdown {

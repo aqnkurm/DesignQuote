@@ -54,7 +54,8 @@ const themes = [
             accent2: '#ff9966',
             card: 'rgba(255, 255, 255, 0.9)',
             particleColor: '255, 94, 98', // RGB format for particles
-            heading_color: '#8B0000' // Dark red for headings to make them pop
+            heading_color: '#8B0000', // Dark red for headings to make them pop
+            button_hover_color: '#135deg' // White color for buttons on hover
         }
     },
     {
@@ -152,6 +153,13 @@ class ThemeSwitcher {
             this.root.style.setProperty('--heading-color', theme.colors.heading_color);
         } else {
             this.root.style.setProperty('--heading-color', theme.colors.accent2);
+        }
+        
+        // Apply button hover color if it exists
+        if (theme.colors.button_hover_color) {
+            this.root.style.setProperty('--button-hover-color', theme.colors.button_hover_color);
+        } else {
+            this.root.style.setProperty('--button-hover-color', theme.colors.accent2);
         }
         
         // Update particle colors if particle system exists
