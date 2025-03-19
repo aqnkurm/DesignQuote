@@ -55,7 +55,7 @@ const themes = [
             card: 'rgba(255, 255, 255, 0.9)',
             particleColor: '255, 94, 98', // RGB format for particles
             heading_color: '#8B0000', // Dark red for headings to make them pop
-            button_hover_color: '#135deg' // White color for buttons on hover
+            button_hover_color: '#feb47b' // White color for buttons on hover
         }
     },
     {
