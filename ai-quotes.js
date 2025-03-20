@@ -78,8 +78,8 @@ const aiQuotes = {
         ]
     },
     
-    // Generate a random AI quote based on category
-    generateQuote(category = 'all') {
+    // Generate a quote using template-based generation
+    async generateQuote(category = 'all') {
         // If category is 'all' or 'ai', randomly select one of the three categories
         if (category === 'all' || category === 'ai') {
             const categories = ['graphic', 'ux', 'product'];
@@ -112,7 +112,8 @@ const aiQuotes = {
         const quote = {
             text,
             author,
-            isAI: true
+            isAI: true,
+            category: category
         };
         
         // Add to AI quotes collection

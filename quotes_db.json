@@ -1,1 +1,14 @@
-{"user": []}
+{
+  "user": [
+    {
+      "text": "test",
+      "author": "test",
+      "category": "user"
+    },
+    {
+      "text": "test",
+      "author": "test",
+      "category": "user"
+    }
+  ]
+}

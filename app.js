@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     // Function to get a random quote from the current category
-    function getRandomQuote() {
+    async function getRandomQuote() {
         // Special handling for AI category
         if (currentCategory === 'ai') {
             // Generate a new AI quote
-            return window.aiQuotes.generateQuote(currentCategory);
+            return await window.aiQuotes.generateQuote(currentCategory);
         }
         
         const categoryQuotes = quotes[currentCategory];
@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     // Function to display a new quote with enhanced animations
-    function displayNewQuote() {
-        const quote = getRandomQuote();
+    async function displayNewQuote() {
+        const quote = await getRandomQuote();
         currentQuote = quote;
         const quoteContainer = document.querySelector('.quote-container');
         
@@ -65,17 +65,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         setTimeout(() => {
             // Use typewriter effect if available
-            if (window.typewriterEffect) {
+            if (window.typewriterEffect && quote && quote.text) {
                 window.typewriterEffect.typeText(quoteElement, quote.text, () => {
                     // After typing is complete, show the author with a fade-in
                     authorElement.textContent = `— ${quote.author}`;
                     authorElement.style.opacity = 1;
                     authorElement.style.transform = 'translateY(0)';
                 });
-            } else {
+            } else if (quote && quote.text) {
                 // Fallback if typewriter effect is not available
                 quoteElement.textContent = quote.text;
                 authorElement.textContent = `— ${quote.author}`;
+            } else {
+                // Handle case when quote is undefined
+                quoteElement.textContent = "No quotes available in this category";
+                authorElement.textContent = "";
             }
             
             // Add fade-in and transform effect for quote container

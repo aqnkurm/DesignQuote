@@ -33,8 +33,10 @@ class QuoteManager {
         this.userQuotes.push(quote);
         this.saveUserQuotes();
         
-        // Send to server
+        // Send to server API
         try {
+            // Try to send to the server API
+            // Use relative URL to work with any host
             const response = await fetch('/api/quotes', {
                 method: 'POST',
                 headers: {
@@ -45,9 +47,13 @@ class QuoteManager {
             
             if (!response.ok) {
                 console.error('Failed to save quote to server:', await response.text());
+                // Continue with local storage even if server fails
+            } else {
+                console.log('Quote successfully saved to server');
             }
         } catch (error) {
             console.error('Error saving quote to server:', error);
+            // Continue with local storage even if server fails
         }
         
         // Add to quotes collection if it exists
@@ -60,6 +66,8 @@ class QuoteManager {
             window.quotes.user.push(quote);
         }
         
+        // Make sure the quote is available in the current session
+        console.log('Quote saved locally:', quote);
         return true;
     }
     
@@ -243,6 +251,13 @@ class QuoteManager {
                 message.textContent = 'Your quote has been submitted successfully!';
                 message.className = 'success-message';
                 message.classList.remove('hidden');
+                
+                // Activate user category button if it exists
+                const userCategoryBtn = document.querySelector('.category-btn[data-category="user"]');
+                if (userCategoryBtn) {
+                    // Switch to user category to show the new quote
+                    userCategoryBtn.click();
+                }
                 
                 // Hide message after 3 seconds
                 setTimeout(() => {

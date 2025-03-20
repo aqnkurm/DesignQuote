@@ -65,7 +65,9 @@ class QuotesHandler(http.server.SimpleHTTPRequestHandler):
                 if category in quotes:
                     self.wfile.write(json.dumps(quotes[category]).encode())
                 else:
-                    self.send_error(HTTPStatus.NOT_FOUND, 'Category not found')
+                    # Return empty array instead of 404 for categories that don't exist yet
+                    # This fixes the issue with /api/quotes/user when no user quotes exist
+                    self.wfile.write(json.dumps([]).encode())
                 return
         
         # Not found
@@ -129,8 +131,11 @@ class QuotesHandler(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
 
 # Start server
-port = 8000
+# Use environment variable for port if available (for hosting platforms)
+port = int(os.environ.get('PORT', 8000))
 handler = QuotesHandler
+# Use "" to listen on all interfaces
 with socketserver.TCPServer(("", port), handler) as httpd:
-    print(f"Server running at http://localhost:{port}")
+    host = os.environ.get('HOST', 'localhost')
+    print(f"Server running at http://{host}:{port}")
     httpd.serve_forever()

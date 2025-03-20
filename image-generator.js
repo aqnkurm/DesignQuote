@@ -111,6 +111,94 @@ class QuoteImageGenerator {
         settingsContainer.className = 'form-group';
         
         // Add settings options
+        // Define image size presets
+        const imageSizes = [
+            { name: 'Landscape (1200×630)', width: 1200, height: 630 },
+            { name: 'Square (1080×1080)', width: 1080, height: 1080 },
+            { name: 'Portrait (1080×1350)', width: 1080, height: 1350 },
+            { name: 'Twitter Post (1200×675)', width: 1200, height: 675 },
+            { name: 'Instagram Story (1080×1920)', width: 1080, height: 1920 },
+            { name: 'Facebook Cover (851×315)', width: 851, height: 315 }
+        ];
+        
+        // Size selector
+        const sizeContainer = document.createElement('div');
+        sizeContainer.style.display = 'flex';
+        sizeContainer.style.alignItems = 'center';
+        sizeContainer.style.marginBottom = '15px';
+        
+        const sizeLabel = document.createElement('label');
+        sizeLabel.textContent = 'Image Size:';
+        sizeLabel.style.marginRight = '10px';
+        
+        const sizeSelect = document.createElement('select');
+        sizeSelect.id = 'size-select';
+        sizeSelect.style.padding = '5px';
+        sizeSelect.style.borderRadius = '4px';
+        sizeSelect.style.border = '1px solid #ccc';
+        
+        // Add size options
+        imageSizes.forEach((size, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = size.name;
+            // Set default size as selected (Landscape)
+            if (index === 0) {
+                option.selected = true;
+            }
+            sizeSelect.appendChild(option);
+        });
+        
+        // Add event listener for size change
+        sizeSelect.addEventListener('change', (e) => {
+            const selectedIndex = parseInt(e.target.value);
+            const selectedSize = imageSizes[selectedIndex];
+            this.settings.width = selectedSize.width;
+            this.settings.height = selectedSize.height;
+            this.updatePreview();
+        });
+        
+        sizeContainer.appendChild(sizeLabel);
+        sizeContainer.appendChild(sizeSelect);
+        
+        // Theme selector
+        const themeContainer = document.createElement('div');
+        themeContainer.style.display = 'flex';
+        themeContainer.style.alignItems = 'center';
+        themeContainer.style.marginBottom = '15px';
+        
+        const themeLabel = document.createElement('label');
+        themeLabel.textContent = 'Theme:';
+        themeLabel.style.marginRight = '10px';
+        
+        const themeSelect = document.createElement('select');
+        themeSelect.id = 'theme-select';
+        themeSelect.style.padding = '5px';
+        themeSelect.style.borderRadius = '4px';
+        themeSelect.style.border = '1px solid #ccc';
+        
+        // Add theme options
+        themes.forEach((theme, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = theme.name;
+            // Set current theme as selected
+            if (window.themeSwitcher && window.themeSwitcher.currentThemeIndex === index) {
+                option.selected = true;
+            }
+            themeSelect.appendChild(option);
+        });
+        
+        // Add event listener for theme change
+        themeSelect.addEventListener('change', (e) => {
+            const selectedIndex = parseInt(e.target.value);
+            this.currentTheme = themes[selectedIndex];
+            this.updatePreview();
+        });
+        
+        themeContainer.appendChild(themeLabel);
+        themeContainer.appendChild(themeSelect);
+        
         // Show author toggle
         const authorContainer = document.createElement('div');
         authorContainer.style.display = 'flex';
@@ -154,6 +242,8 @@ class QuoteImageGenerator {
         quotesContainer.appendChild(quotesToggle);
         
         // Add settings to container
+        settingsContainer.appendChild(sizeContainer);
+        settingsContainer.appendChild(themeContainer);
         settingsContainer.appendChild(authorContainer);
         settingsContainer.appendChild(quotesContainer);
         

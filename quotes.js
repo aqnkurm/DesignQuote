@@ -1,4 +1,4 @@
-// Quotes handler with 1000 built-in quotes
+// Quotes handler with 1000 built-in quotes and Firebase integration
 const quotes = {
     // Initialize with empty arrays for each category
     graphic: [],
@@ -6,6 +6,7 @@ const quotes = {
     product: [],
     ai: [],
     all: [],
+    user: [],
     
     // Flag to track if quotes have been loaded
     loaded: false,
@@ -16,7 +17,7 @@ const quotes = {
     // Status message for loading or errors
     status: 'idle',
     
-    // Function to load quotes from our built-in collection and server
+    // Function to load quotes from our built-in collection and Firebase
     async loadQuotes() {
         if (this.loadingPromise) {
             return this.loadingPromise;
@@ -29,31 +30,11 @@ const quotes = {
                 // Load quotes from our built-in collection
                 this.setBuiltInQuotes();
                 
-                // Load user-submitted quotes from server
-                try {
-                    const response = await fetch('/api/quotes/user');
-                    if (response.ok) {
-                        const userQuotes = await response.json();
-                        
-                        // Initialize user category if it doesn't exist
-                        if (!this.user) {
-                            this.user = [];
-                        }
-                        
-                        // Add user quotes to the collection
-                        this.user = userQuotes;
-                        
-                        // Also add to 'all' category
-                        userQuotes.forEach(quote => {
-                            this.all.push(quote);
-                        });
-                        
-                        console.log(`Loaded ${userQuotes.length} user quotes from server`);
-                    }
-                } catch (serverError) {
-                    console.error('Error loading quotes from server:', serverError);
-                    // Continue with built-in quotes if server fails
-                }
+                // Load user-submitted quotes from local storage
+                this.loadUserQuotesFromLocalStorage();
+                
+                // Load quotes from server API
+                await this.loadFromServerAPI();
                 
                 this.loaded = true;
                 this.status = 'loaded';
@@ -71,6 +52,68 @@ const quotes = {
         });
         
         return this.loadingPromise;
+    },
+    
+    // Load user-submitted quotes from local storage
+    loadUserQuotesFromLocalStorage() {
+        const storedQuotes = localStorage.getItem('userSubmittedQuotes');
+        if (storedQuotes) {
+            try {
+                const userQuotes = JSON.parse(storedQuotes);
+                
+                // Initialize user category if it doesn't exist
+                if (!this.user) {
+                    this.user = [];
+                }
+                
+                // Add user quotes to the collection
+                this.user = userQuotes;
+                
+                // Also add to 'all' category if not already there
+                userQuotes.forEach(quote => {
+                    // Check if quote already exists in 'all' category
+                    const exists = this.all.some(q => 
+                        q.text === quote.text && q.author === quote.author);
+                    
+                    if (!exists) {
+                        this.all.push(quote);
+                    }
+                });
+                
+                console.log(`Loaded ${userQuotes.length} user quotes from local storage`);
+            } catch (error) {
+                console.error('Error parsing user quotes from local storage:', error);
+            }
+        }
+    },
+    
+    // Fallback function to load quotes from server API
+    async loadFromServerAPI() {
+        try {
+            // Use relative URL to work with any host
+            const response = await fetch('/api/quotes/user');
+            if (response.ok) {
+                const userQuotes = await response.json();
+                
+                // Initialize user category if it doesn't exist
+                if (!this.user) {
+                    this.user = [];
+                }
+                
+                // Add user quotes to the collection
+                this.user = userQuotes;
+                
+                // Also add to 'all' category
+                userQuotes.forEach(quote => {
+                    this.all.push(quote);
+                });
+                
+                console.log(`Loaded ${userQuotes.length} user quotes from server`);
+            }
+        } catch (serverError) {
+            console.error('Error loading quotes from server:', serverError);
+            // Continue with built-in quotes if server fails
+        }
     },
     
     // Built-in quotes collection with 1000 design-related quotes
